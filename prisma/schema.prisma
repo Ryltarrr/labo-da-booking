@@ -12,8 +12,8 @@ datasource db {
 
 model Availability {
   id        String   @id @default(cuid())
-  User      User     @relation(fields: [userId], references: [id])
-  userId    String
+  teacher   Teacher  @relation(fields: [teacherId], references: [id])
+  teacherId String
   startAt   DateTime
   endAt     DateTime
   createdAt DateTime @default(now())
@@ -22,8 +22,8 @@ model Availability {
 
 model Training {
   id        String    @id @default(cuid())
-  User      User      @relation(fields: [userId], references: [id])
-  userId    String
+  teacher   Teacher   @relation(fields: [teacherId], references: [id])
+  teacherId String
   duration  Int
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -52,7 +52,7 @@ model Booking {
 // Necessary for Next auth
 model Account {
   id                String  @id @default(cuid())
-  userId            String
+  teacherId         String
   type              String
   provider          String
   providerAccountId String
@@ -63,7 +63,7 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teacher           Teacher @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -71,12 +71,12 @@ model Account {
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
-  userId       String
+  teacherId    String
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teacher      Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 }
 
-model User {
+model Teacher {
   id             String         @id @default(cuid())
   name           String?
   email          String         @unique

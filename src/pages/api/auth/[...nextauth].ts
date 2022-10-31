@@ -7,7 +7,6 @@ import { prisma } from "../../../server/db/client";
 
 export const authOptions: NextAuthOptions = {
   debug: true,
-  // Include user.id on session
   session: {
     strategy: "jwt",
   },
@@ -27,7 +26,7 @@ export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')
-      name: "Connexion Email Ynov",
+      name: "Email Ynov",
       // The credentials is used to generate a suitable form on the sign in page.
       // You can specify whatever fields you are expecting to be submitted.
       // e.g. domain, username, password, 2FA token, etc.

@@ -11,18 +11,18 @@ type ResponseBody = {
 
 const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, password } = req.body as ResponseBody;
-  const user = await prisma.user.findUnique({
+  const teacher = await prisma.teacher.findUnique({
     where: { email },
   });
 
-  if (!user) {
+  if (!teacher) {
     return res.status(403).json({ success: false });
   }
-  const hash = await argon2.verify(user?.password, password);
+  const hash = await argon2.verify(teacher?.password, password);
   if (!hash) {
     return res.status(403).json({ success: false });
   }
-  res.status(200).json(user);
+  res.status(200).json(teacher);
 };
 
 export default authenticate;
