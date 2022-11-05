@@ -11,42 +11,34 @@ datasource db {
 }
 
 model Availability {
-  id        String   @id @default(cuid())
-  teacher   Teacher  @relation(fields: [teacherId], references: [id])
-  teacherId String
-  startAt   DateTime
-  endAt     DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id      String   @id @default(cuid())
+  startAt DateTime
+  endAt   DateTime
 }
 
-model Training {
-  id        String    @id @default(cuid())
-  teacher   Teacher   @relation(fields: [teacherId], references: [id])
-  teacherId String
-  duration  Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Booking   Booking[]
+model Course {
+  id       String    @id @default(cuid())
+  teachers Teacher[]
+  name     String
+  duration Int
+  bookings Booking[]
 }
 
 model Client {
-  id        String    @id @default(cuid())
-  email     String    @unique
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Booking   Booking[]
+  id       String    @id @default(cuid())
+  email    String    @unique
+  bookings Booking[]
 }
 
 model Booking {
-  id         String   @id @default(cuid())
-  client     Client   @relation(fields: [clientId], references: [id])
-  training   Training @relation(fields: [trainingId], references: [id])
-  date       DateTime
-  clientId   String
-  trainingId String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id       String   @id @default(cuid())
+  client   Client   @relation(fields: [clientId], references: [id])
+  course   Course   @relation(fields: [courseId], references: [id])
+  date     DateTime
+  clientId String
+  courseId String
+
+  @@unique([clientId, courseId])
 }
 
 // Necessary for Next auth
@@ -77,15 +69,14 @@ model Session {
 }
 
 model Teacher {
-  id             String         @id @default(cuid())
-  name           String?
-  email          String         @unique
-  emailVerified  DateTime?
-  password       String
-  availabilities Availability[]
-  trainings      Training[]
-  accounts       Account[]
-  sessions       Session[]
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  password      String
+  courses       Course[]
+  accounts      Account[]
+  sessions      Session[]
 }
 
 model VerificationToken {
