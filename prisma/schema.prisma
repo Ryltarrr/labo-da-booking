@@ -24,21 +24,27 @@ model Course {
   bookings Booking[]
 }
 
-model Client {
-  id       String    @id @default(cuid())
-  email    String    @unique
-  bookings Booking[]
+model Booking {
+  id        String   @id @default(cuid())
+  email     String
+  firstName String
+  lastName  String
+  group     String
+  attendees Int
+  location  Location @default(SCHOOL)
+  reason    String   @db.Text
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  String
+  date      DateTime
+  teacher   Teacher? @relation(fields: [teacherId], references: [id])
+  teacherId String?
+
+  @@unique([email, courseId])
 }
 
-model Booking {
-  id       String   @id @default(cuid())
-  client   Client   @relation(fields: [clientId], references: [id])
-  course   Course   @relation(fields: [courseId], references: [id])
-  date     DateTime
-  clientId String
-  courseId String
-
-  @@unique([clientId, courseId])
+enum Location {
+  SCHOOL
+  REMOTE
 }
 
 // Necessary for Next auth
@@ -77,6 +83,7 @@ model Teacher {
   courses       Course[]
   accounts      Account[]
   sessions      Session[]
+  bookings      Booking[]
 }
 
 model VerificationToken {
