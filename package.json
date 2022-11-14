@@ -6,6 +6,7 @@
     "build": "next build",
     "dev": "next dev",
     "postinstall": "prisma generate",
+    "pushDB": "DATABASE_URL='postgresql://postgres:example@localhost:9999/labo-da-booking?schema=public' prisma db push",
     "lint": "next lint",
     "start": "next start"
   },
