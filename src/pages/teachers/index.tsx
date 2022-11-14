@@ -4,7 +4,7 @@ import Head from "next/head";
 import { trpc } from "../../utils/trpc";
 
 const Home: NextPage = () => {
-  const { data, isLoading } = trpc.teacher.getAll.useQuery();
+  const { data } = trpc.teacher.getAll.useQuery();
 
   return (
     <>

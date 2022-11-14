@@ -33,7 +33,7 @@ export const bookingRouter = router({
         if (!course) {
           throw new Error("course does not exists, id: " + input.courseId);
         }
-        const res = await mailjet.post("send", { version: "v3.1" }).request({
+        await mailjet.post("send", { version: "v3.1" }).request({
           Messages: [
             {
               From: {
@@ -76,7 +76,7 @@ export const bookingRouter = router({
             ? "présentiel (salle 203)"
             : "distanciel (Teams)";
 
-        const res = await mailjet.post("send", { version: "v3.1" }).request({
+        await mailjet.post("send", { version: "v3.1" }).request({
           Messages: [
             {
               From: {

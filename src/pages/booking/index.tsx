@@ -1,6 +1,6 @@
 import "dayjs/locale/fr";
 import { DatePicker, TimeInput } from "@mantine/dates";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import { trpc } from "../../utils/trpc";
 import {
   Box,
@@ -13,7 +13,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { z } from "zod";
-import { Location } from "@prisma/client";
+import type { Location } from "@prisma/client";
 
 type InitialValues = {
   courseId: string;
@@ -92,7 +92,7 @@ const BookingRequest: NextPage = () => {
     if (!date || !time) {
       throw new Error("no selected date");
     }
-    let formattedDate = new Date(date);
+    const formattedDate = new Date(date);
     formattedDate.setHours(time.getHours());
     formattedDate.setMinutes(time.getMinutes());
     bookCourse.mutate({ ...form.values, date: formattedDate });

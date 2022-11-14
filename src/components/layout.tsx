@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 function Layout({ children }: { children: ReactNode }) {
   const session = useSession();
