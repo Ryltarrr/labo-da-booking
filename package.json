@@ -29,6 +29,7 @@
     "dayjs": "^1.11.6",
     "next": "13.0.0",
     "next-auth": "^4.15.0",
+    "node-mailjet": "^5.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "superjson": "1.9.1",

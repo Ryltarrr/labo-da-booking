@@ -14,7 +14,27 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <MantineProvider withGlobalStyles withNormalizeCSS>
+      <MantineProvider
+        theme={{
+          colors: {
+            brand: [
+              "#FFFFFF",
+              "#FEFEFF",
+              "#E4DFF0",
+              "#C9BEE7",
+              "#AF9BE4",
+              "#9474E8",
+              "#7847F5",
+              "#6B3DDF",
+              "#6037C9",
+              "#5C3EA8",
+            ],
+          },
+          primaryColor: "brand",
+        }}
+        withGlobalStyles
+        withNormalizeCSS
+      >
         <Layout>
           <Component {...pageProps} />
         </Layout>

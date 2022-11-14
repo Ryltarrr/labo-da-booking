@@ -67,7 +67,6 @@ const Courses: NextPage = () => {
       <Head>
         <title>Cours</title>
         <meta name="description" content="Gestion des cours" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Box sx={{ maxWidth: 300 }} mx="auto">
