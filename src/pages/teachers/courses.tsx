@@ -70,7 +70,7 @@ const Courses: NextPage = () => {
       </Head>
 
       <Box sx={{ maxWidth: 300 }} mx="auto">
-        Mes formation
+        Mes formations
         {data?.map((f) => {
           const teacherParticipates = f.teachers.some(
             (t) => t.email === session.data?.user?.email

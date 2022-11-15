@@ -40,7 +40,7 @@ const links: AppLink[] = [
     visibility: "ALL",
   },
   {
-    label: "Formatteurs",
+    label: "Formateurs",
     href: "/teachers",
     icon: <IconSchool size={22} stroke={1.5} />,
     visibility: "TEACHER",
@@ -64,7 +64,7 @@ const links: AppLink[] = [
     visibility: "TEACHER",
   },
   {
-    label: "Formation",
+    label: "Formations",
     href: "/teachers/courses",
     icon: <IconCertificate size={22} stroke={1.5} />,
     visibility: "TEACHER",
@@ -123,7 +123,7 @@ const AppNavbar: React.FC<AppNavbarProps> = ({ opened }) => {
             </>
           ) : (
             <>
-              <Text>Connexion formatteur</Text>
+              <Text>Connexion formateur</Text>
 
               <ActionIcon onClick={() => signIn()}>
                 <IconLogin />
