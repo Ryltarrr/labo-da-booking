@@ -32,3 +32,13 @@ services:
       POSTGRES_PASSWORD:
     ports:
       - 9999:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
+
+networks:
+  default:
+    name: debian_net-caddy
+    external: true
