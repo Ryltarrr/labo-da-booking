@@ -23,7 +23,7 @@ function Layout({ children }: { children: ReactNode }) {
         },
       }}
       navbarOffsetBreakpoint="sm"
-      navbar={<AppNavbar opened={opened} />}
+      navbar={<AppNavbar opened={opened} setOpened={setOpened} />}
       footer={
         <Footer height={60} p="md">
           <Center>&copy; Labo-DA 2022</Center>

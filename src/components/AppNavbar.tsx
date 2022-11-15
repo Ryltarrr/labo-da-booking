@@ -20,9 +20,11 @@ import {
 import { signOut, signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { type Dispatch, type SetStateAction, useEffect } from "react";
 
 type AppNavbarProps = {
   opened: boolean;
+  setOpened: Dispatch<SetStateAction<boolean>>;
 };
 
 type AppLink = {
@@ -71,9 +73,17 @@ const links: AppLink[] = [
   },
 ];
 
-const AppNavbar: React.FC<AppNavbarProps> = ({ opened }) => {
+const AppNavbar: React.FC<AppNavbarProps> = ({ opened, setOpened }) => {
   const { data: sessionData } = useSession();
   const router = useRouter();
+
+  useEffect(() => {
+    return () => {
+      if (setOpened) {
+        setOpened(false);
+      }
+    };
+  }, [setOpened, router.asPath]);
 
   const filteredLinks = links.filter((link) => {
     if (link.visibility === "TEACHER" && !sessionData) {
@@ -89,7 +99,7 @@ const AppNavbar: React.FC<AppNavbarProps> = ({ opened }) => {
       p="md"
       hiddenBreakpoint="sm"
       hidden={!opened}
-      width={{ sm: 200, lg: 300 }}
+      width={{ sm: 250, lg: 300 }}
     >
       <Navbar.Section grow mt="md">
         {filteredLinks.map((link) => (
