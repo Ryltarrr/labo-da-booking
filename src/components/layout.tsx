@@ -1,9 +1,7 @@
 import {
   AppShell,
   Burger,
-  Center,
   Container,
-  Footer,
   Header,
   MediaQuery,
   useMantineTheme,
@@ -26,11 +24,6 @@ function Layout({ children }: { children: ReactNode }) {
       }}
       navbarOffsetBreakpoint="sm"
       navbar={<AppNavbar opened={opened} setOpened={setOpened} />}
-      footer={
-        <Footer height={60} p="md">
-          <Center>&copy; Labo-DA 2022</Center>
-        </Footer>
-      }
       header={
         <Header height={{ base: 50, md: 70 }} p="md">
           <div
@@ -53,9 +46,7 @@ function Layout({ children }: { children: ReactNode }) {
         </Header>
       }
     >
-      <Container size="sm">
-        <main>{children}</main>
-      </Container>
+      <Container size="sm">{children}</Container>
     </AppShell>
   );
 }

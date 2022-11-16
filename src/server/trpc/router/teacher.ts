@@ -43,10 +43,9 @@ export const teacherRouter = router({
     .mutation(async ({ input, ctx }) => {
       try {
         const hashedPassword = await argon2.hash(input.password);
-        const teacher = await ctx.prisma.teacher.create({
+        await ctx.prisma.teacher.create({
           data: { ...input, password: hashedPassword },
         });
-        console.log("teacher", teacher);
         return true;
       } catch (err) {
         console.error("error while creating teacher", err);

@@ -24,20 +24,27 @@ model Course {
   bookings Booking[]
 }
 
+enum BookingStatus {
+  VALIDATED
+  REFUSED
+  WAITING
+}
+
 model Booking {
-  id        String   @id @default(cuid())
+  id        String        @id @default(cuid())
   email     String
   firstName String
   lastName  String
   group     String
   attendees Int
-  location  Location @default(SCHOOL)
-  reason    String   @db.Text
-  course    Course   @relation(fields: [courseId], references: [id])
+  location  Location      @default(SCHOOL)
+  reason    String        @db.Text
+  course    Course        @relation(fields: [courseId], references: [id])
   courseId  String
   date      DateTime
-  teacher   Teacher? @relation(fields: [teacherId], references: [id])
+  teacher   Teacher?      @relation(fields: [teacherId], references: [id])
   teacherId String?
+  status    BookingStatus @default(WAITING)
 
   @@unique([email, courseId])
 }

@@ -8,6 +8,7 @@ import {
   Text,
 } from "@mantine/core";
 import {
+  IconCalendarEvent,
   IconCalendarPlus,
   IconCertificate,
   IconCheck,
@@ -42,6 +43,12 @@ const links: AppLink[] = [
     href: "/",
     icon: <IconHome size={22} stroke={1.5} />,
     visibility: "ALL",
+  },
+  {
+    label: "Planning",
+    href: "/planning",
+    icon: <IconCalendarEvent size={22} stroke={1.5} />,
+    visibility: "TEACHER",
   },
   {
     label: "Réservation",

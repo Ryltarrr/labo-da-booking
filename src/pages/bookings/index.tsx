@@ -29,7 +29,7 @@ type InitialValues = {
 };
 
 const BookingRequest: NextPage = () => {
-  const { data: availabilities } = trpc.availability.getAll.useQuery();
+  const { data: availabilities } = trpc.availability.getAllFuture.useQuery();
   const { data: courses } = trpc.course.getAll.useQuery();
   const form = useForm<InitialValues>({
     initialValues: {

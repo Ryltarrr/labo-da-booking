@@ -8,6 +8,12 @@ export const bookingRouter = router({
   getAll: publicProcedure.query(async ({ ctx }) => {
     return ctx.prisma.booking.findMany();
   }),
+  getAllToValidate: publicProcedure.query(async ({ ctx }) => {
+    return ctx.prisma.booking.findMany({
+      where: { status: "WAITING" },
+      include: { course: true },
+    });
+  }),
   create: publicProcedure
     .input(
       z.object({
@@ -62,6 +68,40 @@ export const bookingRouter = router({
         return false;
       }
     }),
+  refuse: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ input, ctx }) => {
+      if (ctx.session.user.email) {
+        const booking = await ctx.prisma.booking.update({
+          include: { course: true },
+          where: { id: input },
+          data: { status: "REFUSED" },
+        });
+
+        await mailjet.post("send", { version: "v3.1" }).request({
+          Messages: [
+            {
+              From: {
+                Email: env.MAILJET_SENDER,
+                Name: "Labo DA Ynov",
+              },
+              To: [
+                {
+                  Email: booking.email,
+                  Name: `${booking.firstName} ${booking.lastName}`,
+                },
+              ],
+              TemplateID: Number(env.MAILJET_TEMPLATE_REFUSAL),
+              TemplateLanguage: true,
+              Variables: {
+                firstName: booking.firstName,
+                courseName: booking.course.name,
+              },
+            },
+          ],
+        });
+      }
+    }),
   validate: protectedProcedure
     .input(z.string())
     .mutation(async ({ input, ctx }) => {
@@ -69,7 +109,10 @@ export const bookingRouter = router({
         const booking = await ctx.prisma.booking.update({
           include: { course: true },
           where: { id: input },
-          data: { teacher: { connect: { email: ctx.session.user.email } } },
+          data: {
+            status: "VALIDATED",
+            teacher: { connect: { email: ctx.session.user.email } },
+          },
         });
         const location =
           booking.location === "SCHOOL"
