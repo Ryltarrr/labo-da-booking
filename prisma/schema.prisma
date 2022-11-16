@@ -80,6 +80,7 @@ model Teacher {
   email         String    @unique
   emailVerified DateTime?
   password      String
+  role          String?
   courses       Course[]
   accounts      Account[]
   sessions      Session[]
