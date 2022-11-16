@@ -18,6 +18,7 @@ import {
   IconSchool,
 } from "@tabler/icons";
 import { signOut, signIn, useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { type Dispatch, type SetStateAction, useEffect } from "react";
@@ -77,6 +78,13 @@ const AppNavbar: React.FC<AppNavbarProps> = ({ opened, setOpened }) => {
   const { data: sessionData } = useSession();
   const router = useRouter();
 
+  const getImageUrl = (email: string | null | undefined) => {
+    if (!email) {
+      return "";
+    }
+    return `/${email.split("@")[0]?.replace(".", "-")}.png`;
+  };
+
   useEffect(() => {
     return () => {
       if (setOpened) {
@@ -118,9 +126,22 @@ const AppNavbar: React.FC<AppNavbarProps> = ({ opened, setOpened }) => {
         <Flex justify="space-around" align="center">
           {sessionData ? (
             <>
+              <div>
+                <Image
+                  src={getImageUrl(sessionData.user?.email)}
+                  width={50}
+                  height={50}
+                  style={{ borderRadius: "50%" }}
+                  alt={""}
+                />
+              </div>
               <Box>
-                <Text fw={500}>{sessionData.user?.name}</Text>
-                <Text c="dimmed">{sessionData.user?.email}</Text>
+                <Text fw={500} fz="sm">
+                  {sessionData.user?.name}
+                </Text>
+                <Text c="dimmed" fz="xs">
+                  {sessionData.user?.email}
+                </Text>
               </Box>
               <ActionIcon
                 onClick={() => {
