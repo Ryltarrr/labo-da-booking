@@ -22,6 +22,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { type Dispatch, type SetStateAction, useEffect } from "react";
+import { getImageUrl } from "../utils/functions";
 
 type AppNavbarProps = {
   opened: boolean;
@@ -77,13 +78,6 @@ const links: AppLink[] = [
 const AppNavbar: React.FC<AppNavbarProps> = ({ opened, setOpened }) => {
   const { data: sessionData } = useSession();
   const router = useRouter();
-
-  const getImageUrl = (email: string | null | undefined) => {
-    if (!email) {
-      return "";
-    }
-    return `/${email.split("@")[0]?.replace(".", "-")}.png`;
-  };
 
   useEffect(() => {
     return () => {

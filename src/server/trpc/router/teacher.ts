@@ -26,7 +26,9 @@ function excludeAll<Teacher, Key extends keyof Teacher>(
 
 export const teacherRouter = router({
   getAll: publicProcedure.query(async ({ ctx }) => {
-    const teachers = await ctx.prisma.teacher.findMany();
+    const teachers = await ctx.prisma.teacher.findMany({
+      orderBy: { createdAt: "asc" },
+    });
     return excludeAll(teachers, "password");
   }),
   create: protectedProcedure

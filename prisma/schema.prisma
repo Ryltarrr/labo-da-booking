@@ -80,11 +80,12 @@ model Teacher {
   email         String    @unique
   emailVerified DateTime?
   password      String
-  role          String?
+  role          String
   courses       Course[]
   accounts      Account[]
   sessions      Session[]
   bookings      Booking[]
+  createdAt     DateTime  @default(now())
 }
 
 model VerificationToken {

@@ -29,6 +29,18 @@ const MyApp: AppType<{ session: Session | null }> = ({
               "#6037C9",
               "#5C3EA8",
             ],
+            brandBlue: [
+              "#757B86",
+              "#69707C",
+              "#5D6573",
+              "#525B6B",
+              "#485264",
+              "#3E4A5E",
+              "#354259",
+              "#333C4D",
+              "#303743",
+              "#2D323A",
+            ],
           },
           primaryColor: "brand",
         }}
