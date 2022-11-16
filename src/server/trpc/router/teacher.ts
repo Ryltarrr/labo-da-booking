@@ -33,7 +33,12 @@ export const teacherRouter = router({
   }),
   create: protectedProcedure
     .input(
-      z.object({ name: z.string(), email: z.string(), password: z.string() })
+      z.object({
+        name: z.string(),
+        email: z.string(),
+        password: z.string(),
+        role: z.string(),
+      })
     )
     .mutation(async ({ input, ctx }) => {
       try {

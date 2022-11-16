@@ -2,12 +2,14 @@ import {
   AppShell,
   Burger,
   Center,
+  Container,
   Footer,
   Header,
   MediaQuery,
   useMantineTheme,
 } from "@mantine/core";
 import Image from "next/image";
+import Link from "next/link";
 import { type ReactNode, useState } from "react";
 import logo from "../../public/logo.png";
 import AppNavbar from "./AppNavbar";
@@ -44,12 +46,16 @@ function Layout({ children }: { children: ReactNode }) {
               />
             </MediaQuery>
 
-            <Image src={logo} width={100} alt="Logo Labo-DA"></Image>
+            <Link href="/">
+              <Image src={logo} width={100} alt="Logo Labo-DA"></Image>
+            </Link>
           </div>
         </Header>
       }
     >
-      <main>{children}</main>
+      <Container size="sm">
+        <main>{children}</main>
+      </Container>
     </AppShell>
   );
 }

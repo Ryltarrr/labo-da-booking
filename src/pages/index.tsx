@@ -1,8 +1,18 @@
-import { Container, Flex, Grid, Text, Title } from "@mantine/core";
-import { Teacher } from "@prisma/client";
+import {
+  Button,
+  Center,
+  Divider,
+  Flex,
+  Grid,
+  Text,
+  Title,
+} from "@mantine/core";
+import type { Teacher } from "@prisma/client";
+import { IconCalendarPlus } from "@tabler/icons";
 import { type NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import { getImageUrl } from "../utils/functions";
 import { trpc } from "../utils/trpc";
 
@@ -18,36 +28,41 @@ const Home: NextPage = () => {
           content="Logiciel de réservation pour le Labo-DA Ynov"
         />
       </Head>
-      <Container size="sm">
-        <main>
-          <Title order={2} mb="xl">
-            Bienvenue sur le site du Labo DA de Nantes Ynov Campus !
-          </Title>
-          <Text mb="sm">
-            Notre objectif est de vous accompagner et de vous aider à utiliser
-            les meilleurs outils et technologies, adaptés à votre projet Ydays.
-          </Text>
-          <Text mb="sm">
-            Notre équipe multidisciplinaire nous permet de vous proposer des
-            nombreuses formations en communication, marketing et design.
-          </Text>
-          <Text fs="italic" mb="sm">
-            Nous vous donnons rendez-vous dans l’onglet “Réservation” pour
-            effectuer une demande de formation.
-          </Text>
-          <Text mb="xl">
-            Pour toute question, nous vous invitons à nous rendre visite en
-            salle 203 ou bien à nous envoyer un message par mail ou sur Teams.
-          </Text>
-          <Grid gutter="xl" grow>
-            {teachers?.map((t) => (
-              <Grid.Col span={t.role.includes("DA") ? 6 : 4} key={t.id}>
-                <TeacherBlock teacher={t} />
-              </Grid.Col>
-            ))}
-          </Grid>
-        </main>
-      </Container>
+      <main>
+        <Title order={2} mb="xl">
+          Bienvenue sur le site du Labo DA de Nantes Ynov Campus !
+        </Title>
+        <Text mb="sm">
+          Notre objectif est de vous accompagner et de vous aider à utiliser les
+          meilleurs outils et technologies, adaptés à votre projet Ydays.
+        </Text>
+        <Text mb="sm">
+          Notre équipe multidisciplinaire nous permet de vous proposer de
+          nombreuses formations en communication, marketing et design.
+        </Text>
+        <Center mb="sm">
+          <Link href="/bookings">
+            <Button leftIcon={<IconCalendarPlus size={22} stroke={1.5} />}>
+              Faire une demande de formation
+            </Button>
+          </Link>
+        </Center>
+        <Text mb="xl">
+          Pour toute question, nous vous invitons à nous rendre visite en salle
+          203 ou bien à nous envoyer un message par mail ou sur Teams.
+        </Text>
+        <Divider mb="xl" />
+        <Title order={2} mb="xl">
+          Découvrez la team !
+        </Title>
+        <Grid gutter="xl" grow>
+          {teachers?.map((t) => (
+            <Grid.Col span={t.role.includes("DA") ? 6 : 4} key={t.id}>
+              <TeacherBlock teacher={t} />
+            </Grid.Col>
+          ))}
+        </Grid>
+      </main>
     </>
   );
 };

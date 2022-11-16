@@ -15,13 +15,13 @@ import {
   IconLogin,
   IconLogout,
   IconMail,
-  IconSchool,
 } from "@tabler/icons";
 import { signOut, signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { type Dispatch, type SetStateAction, useEffect } from "react";
+import { ADMIN_EMAIL } from "../utils/constants";
 import { getImageUrl } from "../utils/functions";
 
 type AppNavbarProps = {
@@ -33,7 +33,7 @@ type AppLink = {
   label: string;
   href: string;
   icon: JSX.Element;
-  visibility: "STUDENT" | "TEACHER" | "ALL";
+  visibility: "STUDENT" | "TEACHER" | "ALL" | "ADMIN";
 };
 
 const links: AppLink[] = [
@@ -42,12 +42,6 @@ const links: AppLink[] = [
     href: "/",
     icon: <IconHome size={22} stroke={1.5} />,
     visibility: "ALL",
-  },
-  {
-    label: "Formateurs",
-    href: "/teachers",
-    icon: <IconSchool size={22} stroke={1.5} />,
-    visibility: "TEACHER",
   },
   {
     label: "Réservation",
@@ -63,9 +57,9 @@ const links: AppLink[] = [
   },
   {
     label: "Invitation",
-    href: "/teachers/invite",
+    href: "/teachers",
     icon: <IconMail size={22} stroke={1.5} />,
-    visibility: "TEACHER",
+    visibility: "ADMIN",
   },
   {
     label: "Formations",
@@ -90,6 +84,10 @@ const AppNavbar: React.FC<AppNavbarProps> = ({ opened, setOpened }) => {
   const filteredLinks = links.filter((link) => {
     if (link.visibility === "TEACHER" && !sessionData) {
       return false;
+    } else if (
+      link.visibility === "ADMIN" &&
+      sessionData?.user?.email !== ADMIN_EMAIL
+    ) {
     } else if (link.visibility === "STUDENT" && sessionData) {
       return false;
     }
