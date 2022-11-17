@@ -16,7 +16,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <MantineProvider
         theme={{
-          primaryShade: { light: 6 },
+          primaryShade: { light: 4 },
           colors: {
             brand: [
               "#E4DFF0",
