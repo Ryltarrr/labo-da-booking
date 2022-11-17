@@ -11,6 +11,8 @@ import {
 import { type NextPage } from "next";
 import { trpc } from "../../utils/trpc";
 import { IconCalendar, IconMail, IconUsers } from "@tabler/icons";
+import Head from "next/head";
+import { getPageTitle } from "../../utils/functions";
 
 const Validate: NextPage = () => {
   const { data: bookings, refetch } = trpc.booking.getAllToValidate.useQuery();
@@ -27,12 +29,15 @@ const Validate: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>{getPageTitle("Demande de formation")}</title>
+      </Head>
       <Title order={1} mb="xl">
         Demande de formation
       </Title>
       <Grid gutter="md">
         {bookings?.map((b) => (
-          <Grid.Col key={b.id} span={6}>
+          <Grid.Col sm={12} key={b.id} md={6}>
             <Card shadow="sm" p="lg" radius="md" withBorder>
               <Title order={3}>{b.course.name}</Title>
               <Group position="apart" mt="md" mb="xs">

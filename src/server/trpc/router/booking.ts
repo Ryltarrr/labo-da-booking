@@ -5,10 +5,16 @@ import { mailjet } from "../../../utils/mailjet";
 import { env } from "../../../env/server.mjs";
 
 export const bookingRouter = router({
-  getAll: publicProcedure.query(async ({ ctx }) => {
+  getAll: protectedProcedure.query(async ({ ctx }) => {
     return ctx.prisma.booking.findMany();
   }),
-  getAllToValidate: publicProcedure.query(async ({ ctx }) => {
+  getAllPlanned: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.prisma.booking.findMany({
+      include: { course: true, teacher: true },
+      where: { teacher: { isNot: null } },
+    });
+  }),
+  getAllToValidate: protectedProcedure.query(async ({ ctx }) => {
     return ctx.prisma.booking.findMany({
       where: { status: "WAITING" },
       include: { course: true },

@@ -11,6 +11,7 @@ import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { z } from "zod";
+import { getPageTitle } from "../../utils/functions";
 import { trpc } from "../../utils/trpc";
 
 const Courses: NextPage = () => {
@@ -65,7 +66,7 @@ const Courses: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Cours</title>
+        <title>{getPageTitle("Cours")}</title>
         <meta name="description" content="Gestion des cours" />
       </Head>
 

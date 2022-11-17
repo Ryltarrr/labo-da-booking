@@ -95,7 +95,11 @@ const BookingRequest: NextPage = () => {
     const formattedDate = new Date(date);
     formattedDate.setHours(time.getHours());
     formattedDate.setMinutes(time.getMinutes());
-    bookCourse.mutate({ ...form.values, date: formattedDate });
+    bookCourse.mutate({
+      ...form.values,
+      lastName: form.values.lastName.toUpperCase(),
+      date: formattedDate,
+    });
   };
 
   const isExcluded = (date: Date) => {
