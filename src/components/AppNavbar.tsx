@@ -93,8 +93,9 @@ const AppNavbar: React.FC<AppNavbarProps> = ({ opened, setOpened }) => {
       return false;
     } else if (
       link.visibility === "ADMIN" &&
-      sessionData?.user?.email !== ADMIN_EMAIL
+      (!sessionData || sessionData?.user?.email !== ADMIN_EMAIL)
     ) {
+      return false;
     } else if (link.visibility === "STUDENT" && sessionData) {
       return false;
     }
