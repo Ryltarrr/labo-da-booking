@@ -75,12 +75,17 @@ export const bookingRouter = router({
       }
     }),
   refuse: protectedProcedure
-    .input(z.string())
+    .input(
+      z.object({
+        bookingId: z.string(),
+        reason: z.string().min(1, "La raison ne doit pas être vide"),
+      })
+    )
     .mutation(async ({ input, ctx }) => {
       if (ctx.session.user.email) {
         const booking = await ctx.prisma.booking.update({
           include: { course: true },
-          where: { id: input },
+          where: { id: input.bookingId },
           data: { status: "REFUSED" },
         });
 
@@ -102,6 +107,7 @@ export const bookingRouter = router({
               Variables: {
                 firstName: booking.firstName,
                 courseName: booking.course.name,
+                reason: input.reason,
               },
             },
           ],
