@@ -6,7 +6,7 @@ export const getImageUrl = (email: string | null | undefined) => {
 };
 
 export const getPageTitle = (title: string) => {
-  return `Labo-DA - ${title}`;
+  return `${title} - Labo-DA`;
 };
 
 export const getDateWithoutTime = (date: Date) => {

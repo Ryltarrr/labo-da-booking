@@ -3,17 +3,22 @@ import { DatePicker, TimeInput } from "@mantine/dates";
 import type { NextPage } from "next";
 import { trpc } from "../../utils/trpc";
 import {
-  Box,
   Button,
+  Grid,
   NumberInput,
   Radio,
   Select,
   Textarea,
   TextInput,
+  Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { z } from "zod";
 import type { Location } from "@prisma/client";
+import { useRouter } from "next/router";
+import { showNotification } from "@mantine/notifications";
+import { getPageTitle } from "../../utils/functions";
+import Head from "next/head";
 
 type InitialValues = {
   courseId: string;
@@ -85,7 +90,19 @@ const BookingRequest: NextPage = () => {
     },
   });
 
-  const bookCourse = trpc.booking.create.useMutation();
+  const router = useRouter();
+  const bookCourse = trpc.booking.create.useMutation({
+    onSuccess() {
+      router.replace("/success");
+    },
+    onError() {
+      showNotification({
+        title: "Erreur",
+        message: "La demande n'a pas pu aboutir, veuillez réessayer.",
+        color: "red",
+      });
+    },
+  });
 
   const handleCreate = (values: typeof form.values) => {
     const { date, time } = values;
@@ -113,68 +130,72 @@ const BookingRequest: NextPage = () => {
 
   return (
     <>
-      <Box sx={{ maxWidth: 500 }} mx="auto">
-        <h1>Requests</h1>
-        <form onSubmit={form.onSubmit(handleCreate)}>
-          <Select
-            label="Sélectionner la formation"
-            data={courses?.map((c) => ({ value: c.id, label: c.name })) ?? []}
-            {...form.getInputProps("courseId")}
-          />
-          Heure choisie :{" "}
-          {form.values.date?.toLocaleDateString("fr-FR", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-          {" à "}
-          {form.values.time?.toLocaleTimeString("fr-FR", {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-          <DatePicker
-            label="Date"
-            locale="fr"
-            excludeDate={isExcluded}
-            {...form.getInputProps("date")}
-          />
-          <TimeInput label="Heure" {...form.getInputProps("time")} />
-          <TextInput
-            label="Indiquez votre nom"
-            {...form.getInputProps("lastName")}
-          />
-          <TextInput
-            label="Indiquez votre prénom"
-            {...form.getInputProps("firstName")}
-          />
-          <TextInput
-            label="Indiquez votre adresse mail Ynov"
-            type="email"
-            {...form.getInputProps("email")}
-          />
-          <TextInput
-            label="Indiquez le nom de votre groupe Ydays"
-            {...form.getInputProps("group")}
-          />
-          <NumberInput
-            label="Indiquez le nombre de personnes qui assisteront à la formation"
-            {...form.getInputProps("attendees")}
-          />
-          <Radio.Group
-            label="Souhaitez-vous réaliser la formation"
-            {...form.getInputProps("location")}
-          >
-            <Radio label="En présentiel (salle 203)" value="SCHOOL"></Radio>
-            <Radio label="En distanciel (teams)" value="REMOTE" />
-          </Radio.Group>
-          <Textarea
-            label="Pourquoi souhaitez-vous réaliser cette formation ?"
-            {...form.getInputProps("reason")}
-          />
-          <Button type="submit">submit</Button>
-        </form>
-      </Box>
+      <Head>
+        <title>{getPageTitle("Demande de formation")}</title>
+      </Head>
+      <Title mb="xl">Demande de formation</Title>
+      <form onSubmit={form.onSubmit(handleCreate)}>
+        <Select
+          mb="xs"
+          label="Sélectionner la formation"
+          data={courses?.map((c) => ({ value: c.id, label: c.name })) ?? []}
+          {...form.getInputProps("courseId")}
+        />
+        <Grid mb="xs">
+          <Grid.Col span={8}>
+            <DatePicker
+              label="Date"
+              locale="fr"
+              excludeDate={isExcluded}
+              {...form.getInputProps("date")}
+            />
+          </Grid.Col>
+          <Grid.Col span={4}>
+            <TimeInput label="Heure" {...form.getInputProps("time")} />
+          </Grid.Col>
+        </Grid>
+        <Grid mb="xs">
+          <Grid.Col sm={12} md={6}>
+            <TextInput label="Nom" {...form.getInputProps("lastName")} />
+          </Grid.Col>
+          <Grid.Col span="auto">
+            <TextInput label="Prénom" {...form.getInputProps("firstName")} />
+          </Grid.Col>
+        </Grid>
+
+        <TextInput
+          mb="xs"
+          label="Adresse mail Ynov"
+          type="email"
+          {...form.getInputProps("email")}
+        />
+        <TextInput
+          mb="xs"
+          label="Nom de votre groupe Ydays"
+          {...form.getInputProps("group")}
+        />
+        <NumberInput
+          mb="xs"
+          label="Nombre de personnes qui assisteront à la formation"
+          {...form.getInputProps("attendees")}
+        />
+        <Radio.Group
+          mb="xs"
+          label="Où souhaitez-vous réaliser la formation"
+          {...form.getInputProps("location")}
+        >
+          <Radio label="En présentiel (salle 203)" value="SCHOOL"></Radio>
+          <Radio label="En distanciel (teams)" value="REMOTE" />
+        </Radio.Group>
+        <Textarea
+          mb="md"
+          label="Pourquoi souhaitez-vous réaliser cette formation ?"
+          {...form.getInputProps("reason")}
+        />
+        <Button type="submit" fullWidth>
+          Envoyer la demande
+        </Button>
+      </form>
     </>
   );
 };

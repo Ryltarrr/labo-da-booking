@@ -7,6 +7,7 @@ import { trpc } from "../utils/trpc";
 import "../styles/globals.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Layout from "../components/layout";
+import { NotificationsProvider } from "@mantine/notifications";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -48,9 +49,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
         withGlobalStyles
         withNormalizeCSS
       >
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <NotificationsProvider position="top-right">
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </NotificationsProvider>
       </MantineProvider>
       <ReactQueryDevtools />
     </SessionProvider>

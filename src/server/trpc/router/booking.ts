@@ -35,44 +35,39 @@ export const bookingRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      try {
-        await ctx.prisma.booking.create({
-          data: { ...input },
-        });
-        const course = await ctx.prisma.course.findUnique({
-          where: { id: input.courseId },
-        });
-        if (!course) {
-          throw new Error("course does not exists, id: " + input.courseId);
-        }
-        await mailjet.post("send", { version: "v3.1" }).request({
-          Messages: [
-            {
-              From: {
-                Email: env.MAILJET_SENDER,
-                Name: "Labo DA Ynov",
-              },
-              To: [
-                {
-                  Email: input.email,
-                  Name: `${input.firstName} ${input.lastName}`,
-                },
-              ],
-              TemplateID: Number(env.MAILJET_TEMPLATE_BOOKING),
-              TemplateLanguage: true,
-              Variables: {
-                firstName: input.firstName,
-                courseName: course.name,
-              },
-            },
-          ],
-        });
-
-        return true;
-      } catch (err) {
-        console.error("error while creating teacher", err);
-        return false;
+      const course = await ctx.prisma.course.findUnique({
+        where: { id: input.courseId },
+      });
+      if (!course) {
+        throw new Error("course does not exists, id: " + input.courseId);
       }
+      await ctx.prisma.booking.create({
+        data: { ...input },
+      });
+      await mailjet.post("send", { version: "v3.1" }).request({
+        Messages: [
+          {
+            From: {
+              Email: env.MAILJET_SENDER,
+              Name: "Labo DA Ynov",
+            },
+            To: [
+              {
+                Email: input.email,
+                Name: `${input.firstName} ${input.lastName}`,
+              },
+            ],
+            TemplateID: Number(env.MAILJET_TEMPLATE_BOOKING),
+            TemplateLanguage: true,
+            Variables: {
+              firstName: input.firstName,
+              courseName: course.name,
+            },
+          },
+        ],
+      });
+
+      return true;
     }),
   refuse: protectedProcedure
     .input(
