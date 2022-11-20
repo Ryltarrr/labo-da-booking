@@ -45,8 +45,6 @@ model Booking {
   teacher   Teacher?      @relation(fields: [teacherId], references: [id])
   teacherId String?
   status    BookingStatus @default(WAITING)
-
-  @@unique([email, courseId])
 }
 
 enum Location {
