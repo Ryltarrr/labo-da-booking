@@ -133,8 +133,8 @@ const Validate: NextPage = () => {
           })}
         >
           <TextInput data-autofocus mb="md" {...form.getInputProps("reason")} />
+          <Button type="submit" fullWidth>Valider le refus</Button>
         </form>
-        <Button fullWidth>Valider le refus</Button>
       </Modal>
     </>
   );
