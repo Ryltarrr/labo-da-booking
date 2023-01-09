@@ -51,6 +51,19 @@ const Home: NextPage = () => {
           Pour toute question, nous vous invitons à nous rendre visite en salle
           203 ou bien à nous envoyer un message par mail ou sur Teams.
         </Text>
+        <Text mb="xl" fw="bold">
+          📚 Téléchargez notre catalogue de formations en{" "}
+          <Text
+            component="a"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="Catalogue-Formations_LaboDA.pdf"
+            c="brand"
+          >
+            cliquant ici
+          </Text>
+          .
+        </Text>
         <Divider mb="xl" />
         <Title order={2} mb="xl">
           Découvrez la team !
