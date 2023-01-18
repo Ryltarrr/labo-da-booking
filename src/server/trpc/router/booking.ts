@@ -126,6 +126,7 @@ export const bookingRouter = router({
             ? "présentiel (salle 203)"
             : "distanciel (Teams)";
 
+        booking.date.setHours(booking.date.getHours() + 1);
         await mailjet.post("send", { version: "v3.1" }).request({
           Messages: [
             {
