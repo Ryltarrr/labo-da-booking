@@ -2,7 +2,7 @@ export const getImageUrl = (email: string | null | undefined) => {
   if (!email) {
     return "";
   }
-  return `/${email.split("@")[0]?.replace(".", "-")}.png`;
+  return `/${email.split("@")[0]?.replace(".", "-")}.webp`;
 };
 
 export const getPageTitle = (title: string) => {

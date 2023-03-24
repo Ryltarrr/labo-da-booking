@@ -1,13 +1,12 @@
+import { Carousel } from "@mantine/carousel";
 import {
   Button,
   Center,
+  createStyles,
   Divider,
-  Flex,
-  Grid,
   Text,
   Title,
 } from "@mantine/core";
-import type { Teacher } from "@prisma/client";
 import { IconCalendarPlus } from "@tabler/icons";
 import { type NextPage } from "next";
 import Head from "next/head";
@@ -16,8 +15,25 @@ import Link from "next/link";
 import { getImageUrl, getPageTitle } from "../utils/functions";
 import { trpc } from "../utils/trpc";
 
+const useStyles = createStyles((theme) => ({
+  control: {
+    "&[data-inactive]": {
+      opacity: 0,
+      cursor: "default",
+    },
+    border: "none",
+    height: "36px",
+    width: "36px",
+    ":nth-child(2)": {
+      backgroundColor: theme.colors.brand[4],
+      color: "white",
+    },
+  },
+}));
+
 const Home: NextPage = () => {
   const { data: teachers } = trpc.teacher.getAll.useQuery();
+  const { classes } = useStyles();
 
   return (
     <>
@@ -68,35 +84,25 @@ const Home: NextPage = () => {
         <Title order={2} mb="xl">
           Découvrez la team !
         </Title>
-        <Grid gutter="xl" grow>
+        <Carousel
+          slideSize="20%"
+          align="start"
+          height={180}
+          slideGap="md"
+          classNames={classes}
+        >
           {teachers?.map((t) => (
-            <Grid.Col span={t.role.includes("DA") ? 6 : 4} key={t.id}>
-              <TeacherBlock teacher={t} />
-            </Grid.Col>
+            <Carousel.Slide key={t.id}>
+              <Image
+                src={getImageUrl(t.email)}
+                width={180}
+                height={180}
+                alt={`Photo de ${t.name}`}
+              />
+            </Carousel.Slide>
           ))}
-        </Grid>
+        </Carousel>
       </main>
-    </>
-  );
-};
-
-const TeacherBlock: React.FC<{ teacher: Teacher }> = ({ teacher }) => {
-  return (
-    <>
-      <Flex direction="column" justify="center" align="center" h={200}>
-        <Text ta="center" fz="md" c="brand">
-          {teacher.role}
-        </Text>
-        <Image
-          src={getImageUrl(teacher.email)}
-          width={130}
-          height={130}
-          alt={`Photo de ${teacher.name}`}
-        />
-        <Text fz="lg" c="brandBlue">
-          {teacher.name}
-        </Text>
-      </Flex>
     </>
   );
 };
